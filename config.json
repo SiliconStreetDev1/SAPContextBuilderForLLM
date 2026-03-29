@@ -1,0 +1,62 @@
+{
+  "maxCharsPerChunk": 45000,
+  "maxFileSizeBytes": 128000,
+  "ignoreDirs": [
+    "node_modules", "dist", "build", "coverage", "tmp", ".git", ".vscode", "libs", "lib", "library"
+  ],
+  "ignoreFiles": [
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml"
+  ],
+  "vitalFiles": [
+    "package.json", "readme.md", ".abapgit.xml", "manifest.json", 
+    "ui5.yaml", "ui5-local.yaml", "tsconfig.json", "abaplint.json", "mta.yaml"
+  ],
+  "uiExtensionGroups": [
+    {
+      "groupName": "ABAP Backend",
+      "items": [
+        { "label": "Classes (.clas.abap)", "value": ".clas.abap", "default": true },
+        { "label": "Interfaces (.intf.abap)", "value": ".intf.abap", "default": true },
+        { "label": "Programs (.prog.abap)", "value": ".prog.abap", "default": true },
+        { "label": "Messages (.msag.xml)", "value": ".msag.xml", "default": true }
+      ]
+    },
+    {
+      "groupName": "RAP & CDS",
+       "items": [
+        { "label": "CDS Data (.asddls)", "value": ".asddls", "default": true },
+        { "label": "Access Ctrl (.dcls)", "value": ".dcls", "default": true },
+        { "label": "Behavior (.bdef.asbdef)", "value": ".bdef.asbdef", "default": true },
+        { "label": "Service Def (.srvd)", "value": ".srvd", "default": true }
+      ]
+    },
+    {
+      "groupName": "Dictionary (XML)",
+      "items": [
+        { "label": "Tables (.tabl.xml)", "value": ".tabl.xml", "default": true },
+        { "label": "Data Elements (.dtel.xml)", "value": ".dtel.xml", "default": true },
+        { "label": "Domains (.doma.xml)", "value": ".doma.xml", "default": true },
+        { "label": "Table Types (.ttyp.xml)", "value": ".ttyp.xml", "default": true }
+      ]
+    },
+    {
+      "groupName": "UI5, Web & Frontend",
+      "items": [
+        { "label": "JavaScript (.js, .jsx)", "value": ".js,.jsx", "default": true },
+        { "label": "TypeScript (.ts, .tsx)", "value": ".ts,.tsx", "default": true },
+        { "label": "HTML (.html, .htm)", "value": ".html,.htm", "default": true },
+        { "label": "CSS (.css, .scss, .less)", "value": ".css,.scss,.less", "default": true },
+        { "label": "XML Views (.view.xml, .fragment.xml)", "value": ".view.xml,.fragment.xml", "default": true }
+      ]
+    },
+    {
+      "groupName": "Configuration & Data",
+      "items": [
+        { "label": "JSON Configs (.json)", "value": ".json", "default": true },
+        { "label": "YAML Configs (.yaml, .yml)", "value": ".yaml,.yml", "default": true },
+        { "label": "Environment (.env)", "value": ".env", "default": false },
+        { "label": "Markdown (.md)", "value": ".md", "default": false }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SAP Context Builder</title>
+    <style>
+        /* Base Theme Colors */
+        :root { 
+            --bg-dark: #0d1117; --bg-panel: #161b22; --bg-input: #0d1117; 
+            --border: #30363d; --text-main: #c9d1d9; --text-accent: #58a6ff; 
+            --primary: #1f6feb; --success: #238636; --bridge: #bc8cff; --danger: #da3633;
+        }
+
+        /* Global Resets */
+        body, html { 
+            margin: 0; padding: 0; height: 100vh; width: 100vw; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            background: var(--bg-dark); color: var(--text-main); display: flex; overflow: hidden; 
+        }
+
+        /* Layout Panels */
+        #config-panel { width: 450px; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+        .scroll-area { padding: 25px; overflow-y: auto; flex: 1; }
+        #context-panel { flex: 1; display: flex; flex-direction: column; background: var(--bg-dark); }
+
+        /* Typography */
+        h1 { margin: 0 0 5px 0; font-size: 18px; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .subtitle { font-size: 11px; color: #8b949e; margin-bottom: 25px; display: block; }
+        label { display: block; font-size: 11px; text-transform: uppercase; color: #8b949e; margin-bottom: 8px; font-weight: 600; }
+
+        /* Form Controls */
+        input, select, textarea { width: 100%; padding: 10px; background: var(--bg-input); border: 1px solid var(--border); color: #fff; border-radius: 6px; margin-bottom: 15px; font-size: 13px; font-family: monospace; box-sizing: border-box; }
+        
+        /* Repository Rows */
+        .source-row { display: flex; gap: 8px; margin-bottom: 10px; background: var(--bg-dark); padding: 8px; border-radius: 6px; border: 1px solid var(--border); align-items: center;}
+        .source-row select { width: 90px; margin: 0; padding: 6px;}
+        .source-row input { margin: 0; flex: 1; padding: 6px; border: none; background: transparent; }
+        
+        /* UI Components */
+        .pat-ui { display: none; background: #21262d; padding: 10px; border-radius: 6px; margin-bottom: 15px; border: 1px solid var(--border); }
+        .ext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; background: var(--bg-dark); padding: 15px; border-radius: 6px; border: 1px solid var(--border);}
+        .ext-grid h4 { grid-column: 1 / -1; margin: 0 0 5px 0; font-size: 11px; color: #8b949e; border-bottom: 1px solid var(--border); padding-bottom: 4px; }
+        .ext-grid label { font-size: 11px; font-weight: normal; text-transform: none; display: flex; align-items: center; gap: 6px; margin: 0; cursor: pointer; color: var(--text-main); }
+        
+        /* Buttons */
+        button { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; margin-bottom: 10px; }
+        button:hover { filter: brightness(1.2); }
+        button:disabled { filter: grayscale(1); cursor: not-allowed; opacity: 0.6;}
+        button.secondary { background: #21262d; border: 1px solid var(--border); color: var(--text-main); margin-bottom: 0; }
+        button.danger { background: var(--danger); width: auto; padding: 4px 8px; margin-bottom: 0;}
+        button.bridge-btn { background: var(--bridge); color: #fff; display: none;}
+        
+        /* Context Display Area */
+        #panel-header { padding: 15px 30px; background: var(--bg-panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        #chunks-display { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; }
+        .chunk-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; flex-shrink: 0; min-height: min-content; }
+        .chunk-header { padding: 12px 20px; background: #21262d; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .chunk-title { font-size: 13px; font-weight: bold; color: var(--text-accent); }
+        .chunk-body { padding: 15px; font-family: monospace; font-size: 12px; color: #ce9178; background: var(--bg-dark); white-space: pre-wrap; max-height: 150px; overflow: hidden; position: relative;}
+        
+        /* Modal Warning */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(13, 17, 23, 0.95); z-index: 9999; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-box { background: var(--bg-panel); border: 2px solid var(--danger); border-radius: 8px; padding: 40px; max-width: 550px; text-align: center; }
+        .modal-title { color: var(--danger); font-size: 22px; font-weight: bold; text-transform: uppercase; margin-top: 0; }
+        .modal-btn { background: var(--danger); color: white; border: none; padding: 14px 28px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
+    </style>
+</head>
+<body>
+
+    <div id="botWarningModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2 class="modal-title">⚠️ Bot Automation Enabled ⚠️</h2>
+            <p>Running automated scripts against platforms like Google Gemini violates their Terms of Service. <strong>YOU RISK A PERMANENT BAN.</strong></p>
+            <button class="modal-btn" onclick="document.getElementById('botWarningModal').style.display='none'">I ACCEPT THE RISKS — PROCEED</button>
+        </div>
+    </div>
+
+    <div id="config-panel">
+        <div class="scroll-area">
+            <h1>SAP Context Builder</h1>
+            <span class="subtitle">Secure Context Orchestration Engine</span>
+
+            <label>Profile Manager</label>
+            <div style="display:flex; gap:8px; margin-bottom:20px;">
+                <select id="variantSelect" style="margin:0; flex:1;" onchange="App.loadVariant()"></select>
+                <button class="secondary" style="width:auto; padding: 10px;" onclick="App.saveVariant()" title="Update Current Profile">Save</button>
+                <button class="secondary" style="width:auto; padding: 10px;" onclick="App.saveAsVariant()" title="Create New Profile">Save As</button>
+                <button class="danger" style="width:auto; margin:0; padding: 10px;" onclick="App.deleteVariant()" title="Delete Profile">Delete</button>
+            </div>
+
+            <label>Code Sources</label>
+            <div id="sourcesContainer"></div>
+            <button class="secondary" style="margin-bottom:10px; font-size:11px;" onclick="App.addSourceRow('local', '')">+ ADD REPOSITORY</button>
+
+       <div id="githubAuthSection" class="pat-ui">
+    <label style="color:#fff;">GitHub Authentication</label>
+    <input type="password" id="globalPatInput" placeholder="Enter PAT to encrypt and save locally...">
+    <button class="secondary" style="border-color:var(--success); color:var(--success);" onclick="App.saveSecureToken()">Save to Secure Local Vault</button>
+</div>
+            <label>Artifact Whitelist</label>
+            <div class="ext-grid" id="extGroup"></div>
+
+            <label>Master AI Prompt</label>
+            <textarea id="aiPrompt" style="height: 350px;"></textarea>
+
+   
+            <button id="packBtn" onclick="App.compileContext()">📦 1. COMPILE FULL CONTEXT</button>
+
+            <div id="status" style="margin-top:15px; font-size:12px; text-align:center; font-weight:bold;"></div>
+        </div>
+    </div>
+
+    <div id="context-panel">
+        <div id="panel-header">
+            <h2 style="margin:0; font-size:16px;">Memory Chunks</h2>
+            <button class="secondary" style="width:auto; padding:5px 15px;" onclick="App.downloadAll()">Download XML</button>
+        </div>
+        <div id="chunks-display"></div>
+    </div>
+
+    <script type="module" src="/controller.js"></script>
+</body>
+</html>

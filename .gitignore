@@ -1,0 +1,28 @@
+# --- UI5/Fiori Connection Configs (CRITICAL) ---
+ui5-local.yaml
+ui5-deploy.yaml
+ui5.yaml
+ui5-mock.yaml
+
+.env
+
+
+
+# --- Silicon Street UI5 Pattern ---
+.chrome-profile/
+node_modules/
+dist/
+.scp/
+resources/
+archive.zip
+
+# --- MTA / Cloud Foundry Build Artifacts ---
+Makefile*.mta
+mta_archives/
+mta-*/
+.*_mta_build_tmp/
+
+# --- Standard IDE & OS Junk ---
+.vscode/
+.DS_Store
+Thumbs.db
