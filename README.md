@@ -7,6 +7,7 @@
 >
 > <small>**Option 2: The Terminal Way**</small><br>
 > <small>Inside your project directory, run: `git fetch origin` followed by `git reset --hard origin/main`</small>
+> <small>💡 **Important Setup Change:** Token storage is now strictly managed via `.env` variables for better security. Please review the **Credential Management & Responsibility** section below to configure your new setup.</small>
 
 
 # SAP Context Builder For LLM
