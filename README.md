@@ -16,14 +16,6 @@ A desktop only (Not for server usage)  tool for SAP teams that assembles multipl
 
 > ⚠️ The generated Chunks and XML files contain the actual source code extracted from your configured repositories.
 
-
----
-
-A desktop only (Not for server usage)  tool for SAP teams that assembles multiple ABAP, UI5 and utility repositories into clean XML bundles and chunked context packs for web‑ and IDE‑based LLMs. It gives Gemini, ChatGPT, and Claude a unified, cross‑repo view of your entire landscape so they can generate precise, standard‑compliant ABAP, UI5, and other code with full architectural awareness.
-
-> ⚠️ The generated Chunks and XML files contain the actual source code extracted from your configured repositories.
-
-
 ---
 
 ## Why Create Context?
