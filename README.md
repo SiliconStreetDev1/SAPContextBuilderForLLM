@@ -97,35 +97,33 @@ The SAP Context Builder bridges the gap between distributed developments by link
 - **Unified Context Stream:** Aggregate disparate components—such as ABAP backends, UI5 frontends, and shared libraries—into one synchronized XML payload.
 - **Multi-Source Ingestion:** Allows you to mix local file system paths and remote GitHub URLs within the same session.
 - **Holistic Architecture:** By consolidating separate codebases, the tool provides the AI with a complete architectural view of your entire project landscape, rather than isolated fragments.
-- **Seamless Aggregation:** The background engine iterates through every configured source, cloning remote repositories into isolated temporary directories and merging all artifacts into a centralized collection before intelligent chunking.
+- **Seamless Aggregation:** The background engine iterates through every configured source, extracting remote repositories into isolated temporary directories and merging all artifacts into a centralized collection before intelligent chunking.
 
 #### 🌐 REST Service Integration
 
 The system utilizes the GitHub REST API for all remote repository operations.
 
-### 🛰️ Remote Source Orchestration (Git)
+### 🛰️ Remote Source Orchestration (REST)
 
 The engine utilizes a non-persistent ingestion strategy for remote repositories, designed to minimize data residue on the host system.
 
-* **Cryptographic Isolation:** Repositories are cloned into unique directory structures within the OS temporary vault, identified by a 128-bit hex ID (`sap-builder-[unique-id]`). This is designed to prevent directory collisions and cross-process data leakage.
-* **Ephemeral Ingestion:** Utilizing shallow clones (`--depth 1`), the engine extracts only the latest commit state to reduce network overhead and disk footprint.
+* **Cryptographic Isolation:** Repositories are extracted into unique directory structures within the OS temporary vault, identified by a 128-bit hex ID (`sap-builder-[unique-id]`). This is designed to prevent directory collisions and cross-process data leakage.
+* **Stateless Tarball Streaming:** The engine uses native REST API calls to stream compressed repository tarballs directly into the extraction engine. 
 
 ### 🛡️ Deletion Strategy (Ingestion Cleanup)
 
 > **Note: Exported Files Are Not Deleted**
-> The deletion script described below applies **only** to the temporary folders created during the `git clone` background process. The application does not track, manage, or delete the final XML bundles or Chunk data files that you export.
+> The deletion script described below applies **only** to the temporary folders created during the API tarball extraction background process. The application does not track, manage, or delete the final XML bundles or Chunk data files that you export.
 
 To limit the data footprint on the host environment, the engine utilizes a multi-stage logic that attempts to remove temporary ingestion folders. **Because this process relies on local file system permissions and operating system constraints, successful deletion cannot be guaranteed.**
 
 1.  **Containment Check:** Checks if the target directory is located within the operating system's designated temporary boundaries.
 2.  **Nomenclature Validation:** Checks that the folder name matches the specific application prefix (`sap-builder-`).
 3.  **Existential Verification:** Checks if the target is a valid directory prior to initiating any removal command.
-4.  **Repository Footprint Audit:** Inspects the target for Git metadata to help identify repository system folders.
-5.  **Recursive Removal:** Executes a removal command on the temporary allocation after the files have been ingested into the memory buffer.
+4.  **Recursive Removal:** Executes a removal command on the temporary allocation after the files have been ingested into the memory buffer.
 ### Prerequisites
 
 - Node.js (v16 or higher)
-- Git (for GitHub repository cloning)
 
 ## ⚙️ Configuration (`config.json`)
 
