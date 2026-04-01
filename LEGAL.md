@@ -89,7 +89,7 @@ To the maximum extent permitted by applicable law, the total aggregate liability
 
 The software performs automated directory creation and recursive deletion within the host operating system's temporary file paths.
 
-- **Risk of Loss:** The user acknowledges the inherent risk of automated file system operations. The authors shall not be held liable for any accidental deletion of data, corruption of system files, or loss of information resulting from the execution of the temporary Git ingestion cleanup script or any other file-handling logic within the software.
+- **Risk of Loss:** The user acknowledges the inherent risk of automated file system operations. The authors shall not be held liable for any accidental deletion of data, corruption of system files, or loss of information resulting from the software's temporary file management, cleanup scripts, or any other automated file-handling logic.
 - **User Oversight:** It is the user's responsibility to ensure the software is executed with appropriate permissions and within a controlled environment.
 
 ## 19. Third-Party Service Terms & Data Training
