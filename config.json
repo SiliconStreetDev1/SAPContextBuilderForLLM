@@ -54,7 +54,6 @@
       "items": [
         { "label": "JSON Configs (.json)", "value": ".json", "default": true },
         { "label": "YAML Configs (.yaml, .yml)", "value": ".yaml,.yml", "default": true },
-        { "label": "Environment (.env)", "value": ".env", "default": false },
         { "label": "Markdown (.md)", "value": ".md", "default": false }
       ]
     }
